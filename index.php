@@ -1,15 +1,98 @@
 <?php require_once 'includes/header.php'; ?>
 
 <!-- Hero Section -->
-<section class="hero reveal active" style="margin: 0; border-radius: 0; padding: 120px 20px; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070') center/cover; color: white; min-height: 70vh; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-    <h1 style="color: white; font-size: 3.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); text-align: center; margin-bottom: 20px;">Welcome to Campus Gebeta</h1>
-    <p style="color: #eee; font-size: 1.2rem; max-width: 600px; text-align: center; margin-bottom: 30px;">Skip the queue. Browse the menu, order online, and pick up your meal when it's ready. The ultimate food ordering platform for university students.</p>
-    
-    <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
-        <a href="#menu" class="btn btn-primary" style="font-size: 1.1rem; padding: 15px 35px; border-radius: 30px;">Order Now</a>
-        <?php if (!isLoggedIn()): ?>
-            <a href="register.php" class="btn" style="background: white; color: var(--dark-color); font-size: 1.1rem; padding: 15px 35px; border-radius: 30px;">Get Started</a>
-        <?php endif; ?>
+<section class="hero-section reveal active">
+    <div class="container hero-container">
+        <!-- Left: Content -->
+        <div class="hero-content-left">
+            <span class="hero-badge">
+                <i class="fa-solid fa-utensils"></i> Authentic Ethiopian Campus Dining
+            </span>
+            <h1 class="hero-title">
+                Welcome to <span class="hero-highlight">Campus Gebeta</span>
+            </h1>
+            <p class="hero-text">
+                Skip the queue. Browse authentic local menus, order online, and pick up your hot meals when they're ready. The ultimate food ordering platform for university students.
+            </p>
+            <div class="hero-buttons">
+                <a href="#menu" class="btn btn-primary hero-btn-primary">
+                    <i class="fa-solid fa-fire"></i> Order Now
+                </a>
+                <?php if (!isLoggedIn()): ?>
+                    <a href="register.php" class="btn hero-btn-secondary">
+                        Get Started <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                <?php endif; ?>
+            </div>
+        </div>
+        
+        <!-- Right: Desktop App Mockup (Creative & Desktop-Descriptive Placement) -->
+        <div class="hero-content-right">
+            <!-- Background decorative glows -->
+            <div class="hero-glow hero-glow-orange"></div>
+            <div class="hero-glow hero-glow-green"></div>
+            
+            <!-- Desktop Browser/App Mockup Frame -->
+            <div class="desktop-mockup">
+                <!-- Browser Header / Title Bar -->
+                <div class="desktop-header">
+                    <div class="window-controls">
+                        <span class="control dot-red"></span>
+                        <span class="control dot-yellow"></span>
+                        <span class="control dot-green"></span>
+                    </div>
+                    <div class="address-bar">
+                        <i class="fa-solid fa-lock" style="font-size: 0.65rem; color: #2ecc71; margin-right: 5px;"></i> campus-gebeta.edu.et
+                    </div>
+                    <div class="header-actions">
+                        <i class="fa-solid fa-rotate-right" style="opacity: 0.7;"></i>
+                    </div>
+                </div>
+                
+                <!-- Browser Content / Desktop Application Layout -->
+                <div class="desktop-content">
+                    <!-- App Sidebar -->
+                    <div class="mockup-sidebar">
+                        <div class="logo-space"><i class="fa-solid fa-circle-nodes" style="color: var(--primary-color);"></i> Gebeta</div>
+                        <div class="sidebar-item active"><i class="fa-solid fa-house"></i> Home</div>
+                        <div class="sidebar-item"><i class="fa-solid fa-utensils"></i> Menu</div>
+                        <div class="sidebar-item"><i class="fa-solid fa-cart-shopping"></i> Cart</div>
+                        <div class="sidebar-item"><i class="fa-solid fa-wallet"></i> Wallet</div>
+                    </div>
+                    
+                    <!-- App Main Area -->
+                    <div class="mockup-main">
+                        <div class="mockup-top-bar">
+                            <span class="welcome-text">Welcome, Hawassa Student! 👋</span>
+                            <span class="wallet-badge"><i class="fa-solid fa-wallet"></i> 250.00 ETB</span>
+                        </div>
+                        
+                        <div class="mockup-dashboard-content">
+                            <!-- Banner Image of Local Dish -->
+                            <div class="mockup-banner">
+                                <img src="assets/images/gebeta_hero.png" alt="Featured Platter">
+                                <div class="banner-overlay">
+                                    <h3>Special Gebeta Platter</h3>
+                                    <p>15 mins away • Hot & Fresh</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Stats / Details -->
+                            <div class="mockup-row">
+                                <div class="mockup-stat-card">
+                                    <span class="stat-num">10% OFF</span>
+                                    <span class="stat-lbl">Block 4 Lounge</span>
+                                </div>
+                                <div class="mockup-stat-card">
+                                    <span class="stat-num">4.9 ★</span>
+                                    <span class="stat-lbl">Highly Rated</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -61,7 +144,7 @@
                 foreach ($items as $item) {
                     ?>
                     <div class="menu-card reveal">
-                        <div style="position: relative;">
+                        <div class="menu-img-container">
                             <?php if ($item->image_url): ?>
                                 <img src="<?= h($item->image_url) ?>" alt="<?= h($item->name) ?>" class="menu-img">
                             <?php else: ?>
@@ -138,7 +221,19 @@
         </div>
         
         <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
-            <div class="card reveal" style="padding: 0; overflow: hidden; border-radius: 15px;">
+            <div class="cafeteria-card reveal">
+    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2047" alt="Main Cafe" style="width:100%;height:200px;object-fit:cover;">
+    <div class="cafeteria-details">
+        <h3 style="margin-bottom:5px;">Main Student Lounge</h3>
+        <p style="color: var(--gray); font-size:0.9rem; margin-bottom:15px;">
+            <i class="fa-solid fa-location-dot" style="color: var(--primary-color);"></i> Block 4, Ground Floor
+        </p>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="color:#f1c40f;"><i class="fa-solid fa-star"></i> 4.8</span>
+            <span class="badge" style="background: rgba(46, 204, 113, 0.1); color: var(--secondary-color);">Open Now</span>
+        </div>
+    </div>
+</div>
                 <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2047" alt="Main Cafe" style="width: 100%; height: 200px; object-fit: cover;">
                 <div style="padding: 20px;">
                     <h3 style="margin-bottom: 5px;">Main Student Lounge</h3>
