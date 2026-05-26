@@ -1,0 +1,188 @@
+<?php require_once 'includes/header.php'; ?>
+
+<!-- Hero Section -->
+<section class="hero reveal active" style="margin: 0; border-radius: 0; padding: 120px 20px; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070') center/cover; color: white; min-height: 70vh; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+    <h1 style="color: white; font-size: 3.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); text-align: center; margin-bottom: 20px;">Welcome to Campus Gebeta</h1>
+    <p style="color: #eee; font-size: 1.2rem; max-width: 600px; text-align: center; margin-bottom: 30px;">Skip the queue. Browse the menu, order online, and pick up your meal when it's ready. The ultimate food ordering platform for university students.</p>
+    
+    <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+        <a href="#menu" class="btn btn-primary" style="font-size: 1.1rem; padding: 15px 35px; border-radius: 30px;">Order Now</a>
+        <?php if (!isLoggedIn()): ?>
+            <a href="register.php" class="btn" style="background: white; color: var(--dark-color); font-size: 1.1rem; padding: 15px 35px; border-radius: 30px;">Get Started</a>
+        <?php endif; ?>
+    </div>
+</section>
+
+<div class="container" style="margin-top: -40px; position: relative; z-index: 10;">
+    <div class="search-container reveal" style="background: var(--card-bg); padding: 20px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <i class="fa-solid fa-search search-icon" style="top: 50%;"></i>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search for burgers, pizza, coffee..." style="border: none; background: var(--bg-color);">
+    </div>
+</div>
+
+<div class="container" style="padding-bottom: 60px;">
+    <!-- Featured Meals -->
+    <section id="menu" style="margin-top: 60px;">
+        <div class="reveal" style="text-align: center; margin-bottom: 40px;">
+            <span style="color: var(--primary-color); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Fresh & Hot</span>
+            <h2 style="font-size: 2.5rem;">Featured Meals</h2>
+            <div style="width: 60px; height: 4px; background: var(--secondary-color); margin: 15px auto 0; border-radius: 2px;"></div>
+        </div>
+        
+        <div class="menu-grid" id="menuGrid">
+            <?php
+            // Fetch top 6 items
+            $stmt = $pdo->query("SELECT * FROM menu_items WHERE is_available = 1 ORDER BY RAND() LIMIT 6");
+            $items = $stmt->fetchAll();
+            
+            $user_favorites = [];
+            if (isLoggedIn()) {
+                $stmt = $pdo->prepare("SELECT menu_item_id FROM user_favorites WHERE user_id = ?");
+                $stmt->execute([$_SESSION['user_id']]);
+                $user_favorites = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            }
+            
+            if (count($items) > 0) {
+                foreach ($items as $item) {
+                    ?>
+                    <div class="menu-card reveal">
+                        <div style="position: relative;">
+                            <?php if ($item->image_url): ?>
+                                <img src="<?= h($item->image_url) ?>" alt="<?= h($item->name) ?>" class="menu-img">
+                            <?php else: ?>
+                                <div class="menu-img" style="background: #eee; display: flex; align-items: center; justify-content: center; color: #aaa;">No Image</div>
+                            <?php endif; ?>
+                            
+                            <?php if (isLoggedIn()): ?>
+                                <?php $is_fav = in_array($item->id, $user_favorites); ?>
+                                <button class="toggle-favorite" data-id="<?= $item->id ?>" style="position: absolute; top: 10px; right: 10px; background: white; border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: var(--transition);">
+                                    <i class="<?= $is_fav ? 'fa-solid' : 'fa-regular' ?> fa-heart" style="color: var(--primary-color); font-size: 18px;"></i>
+                                </button>
+                            <?php endif; ?>
+                        </div>
+                        
+                        <div class="menu-content">
+                            <div class="menu-title">
+                                <?= h($item->name) ?>
+                                <span class="menu-price"><?= number_format($item->price, 2) ?> ETB</span>
+                            </div>
+                            <p class="menu-desc"><?= h($item->description) ?></p>
+                            <div class="menu-footer">
+                                <span class="badge" style="background: var(--secondary-color); color: white;"><?= h($item->category) ?></span>
+                                <?php if (!isAdmin()): ?>
+                                    <button class="btn btn-primary add-to-cart" data-id="<?= $item->id ?>"><i class="fa-solid fa-cart-plus"></i> Add</button>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                }
+            } else {
+                echo "<p style='grid-column: 1 / -1; text-align: center; color: var(--gray);'>No items available right now.</p>";
+            }
+            ?>
+        </div>
+        <div class="reveal" style="text-align: center; margin-top: 40px;">
+            <a href="menu.php" class="btn btn-secondary" style="border-radius: 30px; padding: 10px 30px;">View Full Menu</a>
+        </div>
+    </section>
+
+    <!-- Student Discounts -->
+    <section class="reveal" style="margin-top: 80px; background: linear-gradient(135deg, var(--primary-color), #ff5a5f); border-radius: 20px; padding: 60px 40px; color: white; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 30px; box-shadow: 0 15px 30px rgba(255, 140, 0, 0.2);">
+        <div style="flex: 1; min-width: 300px;">
+            <span style="background: white; color: var(--primary-color); padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 0.9rem; margin-bottom: 15px; display: inline-block;">Limited Time</span>
+            <h2 style="color: white; font-size: 2.5rem; margin-bottom: 15px;">50% Off Your First Order!</h2>
+            <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 20px;">Use your university ID to sign up and get half price on your first meal at any campus cafeteria.</p>
+            <?php if (!isLoggedIn()): ?>
+                <a href="register.php" class="btn" style="background: var(--dark-color); color: white; border-radius: 30px; padding: 12px 30px;">Claim Discount</a>
+            <?php endif; ?>
+        </div>
+        <div style="flex: 1; text-align: right; min-width: 300px; display: flex; justify-content: flex-end;">
+            <i class="fa-solid fa-tags" style="font-size: 150px; opacity: 0.2;"></i>
+        </div>
+    </section>
+
+    <!-- Popular Cafeterias -->
+    <section style="margin-top: 80px;">
+        <div class="reveal" style="text-align: center; margin-bottom: 40px;">
+            <span style="color: var(--secondary-color); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Top Rated</span>
+            <h2 style="font-size: 2.5rem;">Popular Cafeterias</h2>
+            <div style="width: 60px; height: 4px; background: var(--primary-color); margin: 15px auto 0; border-radius: 2px;"></div>
+        </div>
+        
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+            <div class="card reveal" style="padding: 0; overflow: hidden; border-radius: 15px;">
+                <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2047" alt="Main Cafe" style="width: 100%; height: 200px; object-fit: cover;">
+                <div style="padding: 20px;">
+                    <h3 style="margin-bottom: 5px;">Main Student Lounge</h3>
+                    <p style="color: var(--gray); font-size: 0.9rem; margin-bottom: 15px;"><i class="fa-solid fa-location-dot" style="color: var(--primary-color);"></i> Block 4, Ground Floor</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: #f1c40f;"><i class="fa-solid fa-star"></i> 4.8</span>
+                        <span class="badge" style="background: rgba(46, 204, 113, 0.1); color: var(--secondary-color);">Open Now</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card reveal" style="padding: 0; overflow: hidden; border-radius: 15px; transition-delay: 0.1s;">
+                <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=2069" alt="Coffee Spot" style="width: 100%; height: 200px; object-fit: cover;">
+                <div style="padding: 20px;">
+                    <h3 style="margin-bottom: 5px;">The Coffee Spot</h3>
+                    <p style="color: var(--gray); font-size: 0.9rem; margin-bottom: 15px;"><i class="fa-solid fa-location-dot" style="color: var(--primary-color);"></i> Library Wing</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: #f1c40f;"><i class="fa-solid fa-star"></i> 4.9</span>
+                        <span class="badge" style="background: rgba(46, 204, 113, 0.1); color: var(--secondary-color);">Open Now</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card reveal" style="padding: 0; overflow: hidden; border-radius: 15px; transition-delay: 0.2s;">
+                <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1974" alt="Dorm Cafe" style="width: 100%; height: 200px; object-fit: cover;">
+                <div style="padding: 20px;">
+                    <h3 style="margin-bottom: 5px;">Dormitory Bites</h3>
+                    <p style="color: var(--gray); font-size: 0.9rem; margin-bottom: 15px;"><i class="fa-solid fa-location-dot" style="color: var(--primary-color);"></i> Near Block 12</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: #f1c40f;"><i class="fa-solid fa-star"></i> 4.5</span>
+                        <span class="badge" style="background: rgba(231, 76, 60, 0.1); color: var(--danger);">Closed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section style="margin-top: 80px;">
+        <div class="reveal" style="text-align: center; margin-bottom: 40px;">
+            <span style="color: var(--primary-color); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">What Students Say</span>
+            <h2 style="font-size: 2.5rem;">Testimonials</h2>
+            <div style="width: 60px; height: 4px; background: var(--secondary-color); margin: 15px auto 0; border-radius: 2px;"></div>
+        </div>
+        
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+            <div class="card reveal" style="border-radius: 15px; position: relative;">
+                <i class="fa-solid fa-quote-left" style="font-size: 40px; color: var(--primary-color); opacity: 0.1; position: absolute; top: 20px; right: 20px;"></i>
+                <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 20px;">
+                    <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary-color); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem;">A</div>
+                    <div>
+                        <h4 style="margin: 0; font-size: 1.1rem;">Abebe Kebede</h4>
+                        <span style="font-size: 0.8rem; color: var(--gray);">Engineering Student</span>
+                    </div>
+                </div>
+                <p style="font-style: italic; color: var(--text-color); line-height: 1.7;">"Campus Gebeta changed my life! I no longer have to wait 30 minutes in line for lunch between my classes. I just order from my phone and pick it up."</p>
+            </div>
+            
+            <div class="card reveal" style="border-radius: 15px; position: relative; transition-delay: 0.1s;">
+                <i class="fa-solid fa-quote-left" style="font-size: 40px; color: var(--secondary-color); opacity: 0.1; position: absolute; top: 20px; right: 20px;"></i>
+                <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 20px;">
+                    <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--secondary-color); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem;">S</div>
+                    <div>
+                        <h4 style="margin: 0; font-size: 1.1rem;">Sara Tesfaye</h4>
+                        <span style="font-size: 0.8rem; color: var(--gray);">Medical Student</span>
+                    </div>
+                </div>
+                <p style="font-style: italic; color: var(--text-color); line-height: 1.7;">"The new market feature is amazing. I managed to buy my anatomy textbooks for half the price from a senior student. The food is great too!"</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<?php require_once 'includes/footer.php'; ?>
