@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <div class="container">
     <div class="form-container" style="margin-top: 40px; margin-bottom: 40px;">
         <h2>Create an Account</h2>
-        <p>Join Campus Gebeta — Order meals, sell items, or post notices.</p>
+        <p>Join Campus Gebeta — Order meals, discover campus food, or sell your dishes.</p>
 
         <?php if ($error): ?>
             <div class="alert alert-danger"><?= h($error) ?></div>

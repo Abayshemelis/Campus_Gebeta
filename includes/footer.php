@@ -9,7 +9,7 @@
                 <span style="color: var(--white); font-size: 1.5rem; font-weight: 700;">Campus <span style="color: var(--primary-color);">Gebeta</span></span>
             </a>
             <p style="color: #aaa; line-height: 1.6; margin-bottom: 20px;">
-                Digitizing campus dining and life for faster, smarter, and better service. The ultimate super-app for university students in Ethiopia.
+                Digitizing campus dining for faster, smarter, and better food service. The ultimate food-ordering platform for university students in Ethiopia.
             </p>
             <div style="display: flex; gap: 15px;">
                 <a href="https://t.me/campusgebeta" target="_blank" style="color: var(--white); background: rgba(255,255,255,0.1); width: 35px; height: 35px; border-radius: 50%; display: flex; justify-content: center; align-items: center; transition: var(--transition);"><i class="fa-brands fa-telegram"></i></a>

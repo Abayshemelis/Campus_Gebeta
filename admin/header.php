@@ -125,18 +125,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <a href="users.php" class="admin-nav-link <?= $current_page == 'users.php'   ? 'active' : '' ?>">
                 <i class="fa-solid fa-users-gear"></i> Users
             </a>
-            <a href="../noticeboard.php" class="admin-nav-link">
-                <i class="fa-solid fa-clipboard-list"></i> Noticeboard
-            </a>
-            <a href="../market.php" class="admin-nav-link">
-                <i class="fa-solid fa-store"></i> Market
-            </a>
-            <a href="../notice_post.php" class="admin-nav-link">
-                <i class="fa-solid fa-plus"></i> Post Notice
-            </a>
-            <a href="../market_post.php" class="admin-nav-link">
-                <i class="fa-solid fa-tag"></i> Post Item
-            </a>
+
         </div>
     </nav>
 

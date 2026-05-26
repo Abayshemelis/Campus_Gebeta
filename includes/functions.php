@@ -36,7 +36,7 @@ function isStudent()
 }
 
 // Check if user can post/manage menu items (admin or seller only)
-function canPostMarket()
+function canPostMenuItem()
 {
     return isAdmin() || isSeller();
 }
