@@ -27,7 +27,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <div class="container nav-container">
             <!-- Logo on the LEFT -->
             <a href="index.php" class="logo" style="display: flex; align-items: center; gap: 10px;">
-                <img src="assets/images/profile.png" alt="Campus Gebeta Logo" style="height: 40px; border-radius: 5px;">
+                <img src="assets/images/gebeta_logo.svg" alt="Campus Gebeta Logo" style="height: 45px; width: 45px; object-fit: contain;">
                 <span style="color: var(--dark-color);">Campus <span style="color: var(--primary-color);">Gebeta</span></span>
             </a>
 
