@@ -33,7 +33,22 @@ CREATE TABLE IF NOT EXISTS menu_items (
     image_url    VARCHAR(255),
     category     VARCHAR(50),
     is_available BOOLEAN DEFAULT TRUE,
-    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    seller_id    INT DEFAULT NULL,
+    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (seller_id) REFERENCES users(id) ON DELETE SET NULL
+);
+
+-- ── Menu Item Ratings ──────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS menu_item_ratings (
+    id           INT AUTO_INCREMENT PRIMARY KEY,
+    menu_item_id INT NOT NULL,
+    user_id      INT NOT NULL,
+    rating       TINYINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+    comment      TEXT,
+    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (menu_item_id) REFERENCES menu_items(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_user_rating (menu_item_id, user_id)
 );
 
 -- ── Orders ───────────────────────────────────────────────────

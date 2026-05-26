@@ -2,8 +2,8 @@
 // includes/db.php
 $host = 'localhost';
 $dbname = 'campus_gebeta';
-$username = 'root'; // default XAMPP user
-$password = 'zerihun123@ze'; // default XAMPP password
+$username = 'root'; 
+$password = ''; 
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
