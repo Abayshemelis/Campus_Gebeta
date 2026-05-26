@@ -23,12 +23,6 @@ function isAdmin()
     return isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
 }
 
-// Check if user is a lecturer
-function isLecturer()
-{
-    return isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'lecturer';
-}
-
 // Check if user is a seller
 function isSeller()
 {
@@ -41,20 +35,7 @@ function isStudent()
     return isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'student';
 }
 
-// Check if user can post on the notice board
-// Admins & Lecturers can post all types. Students can post lost & found only.
-function canPostNotice()
-{
-    return isAdmin() || isLecturer() || isStudent();
-}
-
-// Check if user can post announcements/events (admin or lecturer only)
-function canPostAnnouncement()
-{
-    return isAdmin() || isLecturer();
-}
-
-// Check if user can post on the market (admin or seller only)
+// Check if user can post/manage menu items (admin or seller only)
 function canPostMarket()
 {
     return isAdmin() || isSeller();
@@ -82,7 +63,6 @@ function getRoleLabel()
     $role = $_SESSION['user_role'] ?? 'guest';
     $labels = [
         'admin'    => 'Admin',
-        'lecturer' => 'Lecturer',
         'seller'   => 'Seller',
         'student'  => 'Student',
     ];
@@ -95,7 +75,6 @@ function getRoleBadgeColor()
     $role = $_SESSION['user_role'] ?? '';
     $colors = [
         'admin'    => '#e63946',
-        'lecturer' => '#2a9d8f',
         'seller'   => '#f4a261',
         'student'  => '#457b9d',
     ];

@@ -5,12 +5,10 @@ require_once 'header.php';
 $menu_count  = $pdo->query("SELECT COUNT(*) FROM menu_items")->fetchColumn();
 $order_count = $pdo->query("SELECT COUNT(*) FROM orders WHERE status != 'Cancelled'")->fetchColumn();
 $revenue     = $pdo->query("SELECT COALESCE(SUM(total_amount),0) FROM orders WHERE status = 'Served'")->fetchColumn();
-$notice_count = $pdo->query("SELECT COUNT(*) FROM notices")->fetchColumn();
-$market_count = $pdo->query("SELECT COUNT(*) FROM marketplace_items")->fetchColumn();
 
 // Per-role user counts
 $role_counts = [];
-foreach (['student', 'seller', 'lecturer', 'admin'] as $r) {
+foreach (['student', 'seller', 'admin'] as $r) {
     $role_counts[$r] = $pdo->prepare("SELECT COUNT(*) FROM users WHERE role=?");
     $role_counts[$r]->execute([$r]);
     $role_counts[$r] = (int)$role_counts[$r]->fetchColumn();
@@ -23,20 +21,6 @@ $recent_orders = $pdo->query(
      JOIN users u ON o.user_id = u.id
      ORDER BY o.created_at DESC LIMIT 5"
 )->fetchAll();
-
-// Recent notices
-$recent_notices = $pdo->query(
-    "SELECT n.*, u.name as author FROM notices n
-     JOIN users u ON n.user_id = u.id
-     ORDER BY n.created_at DESC LIMIT 4"
-)->fetchAll();
-
-// Recent market items
-$recent_items = $pdo->query(
-    "SELECT m.*, u.name as seller FROM marketplace_items m
-     JOIN users u ON m.user_id = u.id
-     ORDER BY m.created_at DESC LIMIT 4"
-)->fetchAll();
 ?>
 
 <div class="container" style="padding-bottom: 50px;">
@@ -47,7 +31,7 @@ $recent_items = $pdo->query(
     </div>
 
     <!-- ── Top Stats ── -->
-    <div class="admin-stat-grid">
+    <div class="admin-stat-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
         <div class="admin-stat-card">
             <div class="stat-icon" style="color:var(--primary-color);"><i class="fa-solid fa-burger"></i></div>
             <h3><?= $menu_count ?></h3>
@@ -68,16 +52,6 @@ $recent_items = $pdo->query(
             <h3><?= $total_users ?></h3>
             <p>Total Users</p>
         </div>
-        <div class="admin-stat-card" style="border-top-color:#2a9d8f;">
-            <div class="stat-icon" style="color:#2a9d8f;"><i class="fa-solid fa-clipboard-list"></i></div>
-            <h3><?= $notice_count ?></h3>
-            <p>Notices Posted</p>
-        </div>
-        <div class="admin-stat-card" style="border-top-color:#e63946;">
-            <div class="stat-icon" style="color:#e63946;"><i class="fa-solid fa-store"></i></div>
-            <h3><?= $market_count ?></h3>
-            <p>Market Listings</p>
-        </div>
     </div>
 
     <!-- ── User Breakdown ── -->
@@ -88,7 +62,6 @@ $recent_items = $pdo->query(
             $role_info = [
                 'student'  => ['color' => '#457b9d', 'icon' => 'fa-graduation-cap', 'label' => 'Students'],
                 'seller'   => ['color' => '#f4a261', 'icon' => 'fa-tag',            'label' => 'Sellers'],
-                'lecturer' => ['color' => '#2a9d8f', 'icon' => 'fa-chalkboard',     'label' => 'Lecturers'],
                 'admin'    => ['color' => '#e63946', 'icon' => 'fa-user-shield',     'label' => 'Admins'],
             ];
             foreach ($role_info as $role => $info): ?>
@@ -106,7 +79,7 @@ $recent_items = $pdo->query(
         </div>
     </div>
 
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:25px; flex-wrap:wrap;">
+    <div style="display:grid; grid-template-columns: 1fr; gap:25px;">
 
         <!-- ── Recent Orders ── -->
         <div class="card">
@@ -134,63 +107,6 @@ $recent_items = $pdo->query(
                 </table>
                 <div style="margin-top:15px; text-align:right;">
                     <a href="orders.php" class="btn btn-secondary" style="padding:7px 14px; font-size:0.85rem;">View All Orders</a>
-                </div>
-            <?php endif; ?>
-        </div>
-
-        <!-- ── Recent Notices ── -->
-        <div class="card">
-            <h3 style="margin-bottom:20px;"><i class="fa-solid fa-clipboard-list" style="color:#2a9d8f;"></i> Recent Notices</h3>
-            <?php if (empty($recent_notices)): ?>
-                <p style="color:var(--gray);">No notices yet.</p>
-            <?php else: ?>
-                <div style="display:flex; flex-direction:column; gap:12px;">
-                    <?php foreach ($recent_notices as $n): ?>
-                        <div style="border-left: 3px solid var(--primary-color); padding: 8px 12px; background:var(--light-color); border-radius:5px;">
-                            <div style="font-weight:600; font-size:0.9rem;"><?= h($n->title) ?></div>
-                            <div style="font-size:0.8rem; color:var(--gray);">
-                                By <?= h($n->author) ?> &bull; <?= date('M d', strtotime($n->created_at)) ?>
-                                <span class="badge" style="background:var(--dark-color); color:white; font-size:0.7rem; margin-left:5px;"><?= str_replace('_', '&amp;', $n->type) ?></span>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-                <div style="margin-top:15px; text-align:right;">
-                    <a href="../noticeboard.php" class="btn btn-secondary" style="padding:7px 14px; font-size:0.85rem;">View Noticeboard</a>
-                </div>
-            <?php endif; ?>
-        </div>
-
-        <!-- ── Recent Market Items ── -->
-        <div class="card" style="grid-column: 1 / -1;">
-            <h3 style="margin-bottom:20px;"><i class="fa-solid fa-store" style="color:#e63946;"></i> Recent Market Listings</h3>
-            <?php if (empty($recent_items)): ?>
-                <p style="color:var(--gray);">No market listings yet.</p>
-            <?php else: ?>
-                <table style="font-size:0.88rem;">
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Category</th>
-                            <th>Price</th>
-                            <th>Seller</th>
-                            <th>Posted</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($recent_items as $item): ?>
-                            <tr>
-                                <td><?= h($item->title) ?></td>
-                                <td><?= h($item->category) ?></td>
-                                <td><?= number_format($item->price, 2) ?> ETB</td>
-                                <td><?= h($item->seller) ?></td>
-                                <td><?= date('M d', strtotime($item->created_at)) ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-                <div style="margin-top:15px; text-align:right;">
-                    <a href="../market.php" class="btn btn-secondary" style="padding:7px 14px; font-size:0.85rem;">View Market</a>
                 </div>
             <?php endif; ?>
         </div>

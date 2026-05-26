@@ -152,4 +152,149 @@ $(document).ready(function () {
     }
     window.addEventListener('scroll', reveal);
     reveal(); // Trigger on load
+
+    // --- Rating System JS ---
+    const ratingModal = $('#ratingModal');
+    const modalOverlay = $('#modalOverlay');
+
+    function openRatingModal(itemId, itemName) {
+        $('#ratingFormItemId').val(itemId);
+        $('#modalItemName').text(itemName + ' Reviews');
+        $('#reviewsList').html('<p style="text-align:center;color:var(--gray);"><i class="fa-solid fa-spinner fa-spin"></i> Loading reviews...</p>');
+        $('#modalAvgRating').text('0.0');
+        $('#modalAvgStars').html('');
+        $('#modalReviewsCount').text('Based on 0 reviews');
+        
+        // Reset form
+        if ($('#ratingForm').length) {
+            $('#ratingForm')[0].reset();
+            $('#submitReviewTitle').text('Rate this product');
+        }
+
+        // Fetch existing reviews
+        $.ajax({
+            url: 'ajax/get_reviews.php',
+            type: 'GET',
+            data: { menu_item_id: itemId },
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    $('#modalAvgRating').text(response.avg_rating);
+                    
+                    // Render average stars
+                    let starsHtml = '';
+                    let avg = parseFloat(response.avg_rating);
+                    for (let i = 1; i <= 5; i++) {
+                        if (i <= Math.round(avg)) {
+                            starsHtml += '<i class="fa-solid fa-star"></i> ';
+                        } else {
+                            starsHtml += '<i class="fa-regular fa-star"></i> ';
+                        }
+                    }
+                    $('#modalAvgStars').html(starsHtml);
+                    $('#modalReviewsCount').text('Based on ' + response.reviews_count + ' review(s)');
+
+                    // Render reviews list
+                    if (response.reviews.length > 0) {
+                        let listHtml = '';
+                        response.reviews.forEach(function (r) {
+                            let revStars = '';
+                            for (let i = 1; i <= 5; i++) {
+                                if (i <= r.rating) {
+                                    revStars += '<i class="fa-solid fa-star"></i>';
+                                } else {
+                                    revStars += '<i class="fa-regular fa-star"></i>';
+                                }
+                            }
+                            listHtml += `
+                                <div class="review-item">
+                                    <div class="review-header">
+                                        <span class="review-author">${r.user_name}</span>
+                                        <span class="review-date">${r.created_at}</span>
+                                    </div>
+                                    <div class="review-stars" style="margin-bottom:8px;">${revStars}</div>
+                                    <p class="review-comment">${r.comment || '<i>No comment left.</i>'}</p>
+                                </div>
+                            `;
+                        });
+                        $('#reviewsList').html(listHtml);
+                    } else {
+                        $('#reviewsList').html('<p style="text-align:center;color:var(--gray);padding:15px 0;">No reviews yet. Be the first to review!</p>');
+                    }
+
+                    // Populate my review if exists
+                    if (response.my_review && $('#ratingForm').length) {
+                        $('#submitReviewTitle').text('Update your review');
+                        $(`input[name="rating"][value="${response.my_review.rating}"]`).prop('checked', true);
+                        $('#ratingComment').val(response.my_review.comment);
+                    }
+                } else {
+                    $('#reviewsList').html('<p style="text-align:center;color:var(--danger);">' + (response.message || 'Error loading reviews') + '</p>');
+                }
+            },
+            error: function () {
+                $('#reviewsList').html('<p style="text-align:center;color:var(--danger);">Error connecting to server.</p>');
+            }
+        });
+
+        ratingModal.addClass('show');
+        modalOverlay.addClass('show');
+        $('body').css('overflow', 'hidden');
+    }
+
+    function closeRatingModal() {
+        ratingModal.removeClass('show');
+        modalOverlay.removeClass('show');
+        $('body').css('overflow', '');
+    }
+
+    // Bind click events on card rating badges
+    $(document).on('click', '.card-rating-badge', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        let itemId = $(this).data('id');
+        let itemName = $(this).data('name');
+        openRatingModal(itemId, itemName);
+    });
+
+    $('#closeRatingModal').on('click', closeRatingModal);
+    modalOverlay.on('click', closeRatingModal);
+
+    // Form Submission
+    $('#ratingForm').on('submit', function (e) {
+        e.preventDefault();
+        let formData = $(this).serialize();
+        let btn = $(this).find('button[type="submit"]');
+        let originalHtml = btn.html();
+
+        btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin"></i> Submitting...');
+
+        $.ajax({
+            url: 'ajax/submit_rating.php',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function (response) {
+                btn.prop('disabled', false).html(originalHtml);
+                if (response.success) {
+                    alert(response.message || 'Review submitted successfully!');
+                    let itemId = $('#ratingFormItemId').val();
+                    let itemName = $('#modalItemName').text().replace(' Reviews', '');
+                    
+                    // Update badges in UI if they exist
+                    $(`.rating-val-${itemId}`).text(response.avg_rating);
+                    $(`.rating-count-${itemId}`).text('(' + response.reviews_count + ')');
+
+                    // Refresh modal reviews list
+                    openRatingModal(itemId, itemName);
+                } else {
+                    alert(response.message || 'Error submitting rating.');
+                }
+            },
+            error: function () {
+                btn.prop('disabled', false).html(originalHtml);
+                alert('Error connecting to the server. Please try again.');
+            }
+        });
+    });
 });

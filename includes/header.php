@@ -74,16 +74,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     <i class="fa-solid fa-utensils" style="margin-right: 10px;"></i> Full Menu
                 </a>
             </li>
-            <li>
-                <a href="market.php" class="side-nav-link <?= $current_page == 'market.php' ? 'active' : '' ?>">
-                    <i class="fa-solid fa-store" style="margin-right: 10px;"></i> Gebeta Market
-                </a>
-            </li>
-            <li>
-                <a href="noticeboard.php" class="side-nav-link <?= $current_page == 'noticeboard.php' ? 'active' : '' ?>">
-                    <i class="fa-solid fa-clipboard-list" style="margin-right: 10px;"></i> Noticeboard
-                </a>
-            </li>
 
             <?php if (!isAdmin()): ?>
                 <li>
@@ -106,17 +96,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
                             <i class="fa-solid fa-users-gear" style="margin-right: 10px;"></i> Manage Users
                         </a>
                     </li>
-                <?php elseif (isLecturer()): ?>
-                    <li>
-                        <a href="notice_post.php" class="side-nav-link <?= $current_page == 'notice_post.php' ? 'active' : '' ?>">
-                            <i class="fa-solid fa-bullhorn" style="margin-right: 10px;"></i> Post Notice
-                        </a>
-                    </li>
-                    <li>
-                        <a href="settings.php" class="side-nav-link <?= $current_page == 'settings.php' ? 'active' : '' ?>">
-                            <i class="fa-solid fa-gear" style="margin-right: 10px;"></i> Settings
-                        </a>
-                    </li>
                 <?php elseif (isSeller()): ?>
                     <li>
                         <a href="seller_dashboard.php" class="side-nav-link <?= $current_page == 'seller_dashboard.php' ? 'active' : '' ?>">
@@ -124,8 +103,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         </a>
                     </li>
                     <li>
-                        <a href="market_post.php" class="side-nav-link <?= $current_page == 'market_post.php' ? 'active' : '' ?>">
-                            <i class="fa-solid fa-tag" style="margin-right: 10px;"></i> Post Item
+                        <a href="seller_menu_item.php" class="side-nav-link <?= $current_page == 'seller_menu_item.php' ? 'active' : '' ?>">
+                            <i class="fa-solid fa-plus" style="margin-right: 10px;"></i> Post Food/Drink
                         </a>
                     </li>
                     <li>

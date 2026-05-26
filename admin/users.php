@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
     if ($_POST['action'] === 'change_role') {
         $new_role = $_POST['role'] ?? '';
-        $allowed  = ['student', 'seller', 'lecturer', 'admin'];
+        $allowed  = ['student', 'seller', 'admin'];
         if ($uid && in_array($new_role, $allowed)) {
             $stmt = $pdo->prepare("UPDATE users SET role = ? WHERE id = ?");
             $stmt->execute([$new_role, $uid]);
@@ -59,7 +59,7 @@ $users = $stmt->fetchAll();
 
 // Role counts
 $role_counts = [];
-foreach (['admin', 'lecturer', 'seller', 'student'] as $r) {
+foreach (['admin', 'seller', 'student'] as $r) {
     $s = $pdo->prepare("SELECT COUNT(*) as c FROM users WHERE role = ?");
     $s->execute([$r]);
     $role_counts[$r] = $s->fetch()->c;
@@ -83,7 +83,6 @@ foreach (['admin', 'lecturer', 'seller', 'student'] as $r) {
         <?php
         $card_data = [
             ['role' => 'admin',    'icon' => 'fa-user-shield',  'color' => '#e63946', 'label' => 'Admins'],
-            ['role' => 'lecturer', 'icon' => 'fa-chalkboard',   'color' => '#2a9d8f', 'label' => 'Lecturers'],
             ['role' => 'seller',   'icon' => 'fa-tag',          'color' => '#f4a261', 'label' => 'Sellers'],
             ['role' => 'student',  'icon' => 'fa-graduation-cap', 'color' => '#457b9d', 'label' => 'Students'],
         ];
@@ -108,7 +107,6 @@ foreach (['admin', 'lecturer', 'seller', 'student'] as $r) {
                 <select name="role" class="form-control">
                     <option value="">All Roles</option>
                     <option value="admin" <?= $filter_role == 'admin'    ? 'selected' : '' ?>>Admin</option>
-                    <option value="lecturer" <?= $filter_role == 'lecturer' ? 'selected' : '' ?>>Lecturer</option>
                     <option value="seller" <?= $filter_role == 'seller'   ? 'selected' : '' ?>>Seller</option>
                     <option value="student" <?= $filter_role == 'student'  ? 'selected' : '' ?>>Student</option>
                 </select>
@@ -144,7 +142,7 @@ foreach (['admin', 'lecturer', 'seller', 'student'] as $r) {
                 <?php else: ?>
                     <?php foreach ($users as $u): ?>
                         <?php
-                        $roleColors = ['admin' => '#e63946', 'lecturer' => '#2a9d8f', 'seller' => '#f4a261', 'student' => '#457b9d'];
+                        $roleColors = ['admin' => '#e63946', 'seller' => '#f4a261', 'student' => '#457b9d'];
                         $rc = $roleColors[$u->role] ?? '#888';
                         $isCurrentUser = ($u->id == $_SESSION['user_id']);
                         $status = $u->status ?? 'active';
@@ -178,7 +176,6 @@ foreach (['admin', 'lecturer', 'seller', 'student'] as $r) {
                                         <select name="role" class="form-control" style="padding:4px 8px; font-size:0.82rem; width:auto;">
                                             <option value="student" <?= $u->role == 'student'  ? 'selected' : '' ?>>Student</option>
                                             <option value="seller" <?= $u->role == 'seller'   ? 'selected' : '' ?>>Seller</option>
-                                            <option value="lecturer" <?= $u->role == 'lecturer' ? 'selected' : '' ?>>Lecturer</option>
                                             <option value="admin" <?= $u->role == 'admin'    ? 'selected' : '' ?>>Admin</option>
                                         </select>
                                         <button type="submit" class="btn btn-primary" style="padding:5px 10px; font-size:0.82rem;">

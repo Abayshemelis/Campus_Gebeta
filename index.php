@@ -31,8 +31,23 @@
         
         <div class="menu-grid" id="menuGrid">
             <?php
-            // Fetch top 6 items
-            $stmt = $pdo->query("SELECT * FROM menu_items WHERE is_available = 1 ORDER BY RAND() LIMIT 6");
+            // Fetch top 6 items with reviews and seller info
+            $stmt = $pdo->query("
+                SELECT mi.*, 
+                       COALESCE(r.avg_rating, 0.0) as avg_rating, 
+                       COALESCE(r.reviews_count, 0) as reviews_count,
+                       u.name as seller_name
+                FROM menu_items mi
+                LEFT JOIN (
+                    SELECT menu_item_id, AVG(rating) as avg_rating, COUNT(*) as reviews_count 
+                    FROM menu_item_ratings 
+                    GROUP BY menu_item_id
+                ) r ON mi.id = r.menu_item_id
+                LEFT JOIN users u ON mi.seller_id = u.id
+                WHERE mi.is_available = 1
+                ORDER BY RAND() 
+                LIMIT 6
+            ");
             $items = $stmt->fetchAll();
             
             $user_favorites = [];
@@ -65,6 +80,18 @@
                             <div class="menu-title">
                                 <?= h($item->name) ?>
                                 <span class="menu-price"><?= number_format($item->price, 2) ?> ETB</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 0.82rem;">
+                                <!-- Star rating badge -->
+                                <div class="card-rating-badge" data-id="<?= $item->id ?>" data-name="<?= h($item->name) ?>">
+                                    <i class="fa-solid fa-star"></i> 
+                                    <span class="rating-val-<?= $item->id ?>"><?= number_format($item->avg_rating, 1) ?></span> 
+                                    <span class="rating-count-<?= $item->id ?>" style="color: var(--gray); font-weight: normal;">(<?= $item->reviews_count ?>)</span>
+                                </div>
+                                <!-- Seller badge -->
+                                <?php if ($item->seller_name): ?>
+                                    <span style="color: var(--gray);"><i class="fa-solid fa-shop" style="color: var(--primary-color);"></i> <?= h($item->seller_name) ?></span>
+                                <?php endif; ?>
                             </div>
                             <p class="menu-desc"><?= h($item->description) ?></p>
                             <div class="menu-footer">
@@ -149,37 +176,29 @@
         </div>
     </section>
 
-    <!-- Testimonials -->
-    <section style="margin-top: 80px;">
-        <div class="reveal" style="text-align: center; margin-bottom: 40px;">
-            <span style="color: var(--primary-color); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">What Students Say</span>
-            <h2 style="font-size: 2.5rem;">Testimonials</h2>
+    <!-- Rating Features Showcase -->
+    <section class="reveal" style="margin-top: 80px;">
+        <div style="text-align: center; margin-bottom: 40px;">
+            <span style="color: var(--primary-color); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Transparency & Quality</span>
+            <h2 style="font-size: 2.5rem;">Rate Your Dining Experience</h2>
             <div style="width: 60px; height: 4px; background: var(--secondary-color); margin: 15px auto 0; border-radius: 2px;"></div>
         </div>
         
-        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
-            <div class="card reveal" style="border-radius: 15px; position: relative;">
-                <i class="fa-solid fa-quote-left" style="font-size: 40px; color: var(--primary-color); opacity: 0.1; position: absolute; top: 20px; right: 20px;"></i>
-                <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 20px;">
-                    <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary-color); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem;">A</div>
-                    <div>
-                        <h4 style="margin: 0; font-size: 1.1rem;">Abebe Kebede</h4>
-                        <span style="font-size: 0.8rem; color: var(--gray);">Engineering Student</span>
-                    </div>
-                </div>
-                <p style="font-style: italic; color: var(--text-color); line-height: 1.7;">"Campus Gebeta changed my life! I no longer have to wait 30 minutes in line for lunch between my classes. I just order from my phone and pick it up."</p>
+        <div style="display: flex; gap: 30px; align-items: center; justify-content: center; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 300px; text-align: center; padding: 20px;">
+                <i class="fa-solid fa-star-half-stroke" style="font-size: 4rem; color: #f1c40f; margin-bottom: 15px;"></i>
+                <h4>Star Ratings</h4>
+                <p style="color: var(--gray); font-size: 0.95rem;">Rate menu items directly out of 5 stars so others know what is delicious.</p>
             </div>
-            
-            <div class="card reveal" style="border-radius: 15px; position: relative; transition-delay: 0.1s;">
-                <i class="fa-solid fa-quote-left" style="font-size: 40px; color: var(--secondary-color); opacity: 0.1; position: absolute; top: 20px; right: 20px;"></i>
-                <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 20px;">
-                    <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--secondary-color); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem;">S</div>
-                    <div>
-                        <h4 style="margin: 0; font-size: 1.1rem;">Sara Tesfaye</h4>
-                        <span style="font-size: 0.8rem; color: var(--gray);">Medical Student</span>
-                    </div>
-                </div>
-                <p style="font-style: italic; color: var(--text-color); line-height: 1.7;">"The new market feature is amazing. I managed to buy my anatomy textbooks for half the price from a senior student. The food is great too!"</p>
+            <div style="flex: 1; min-width: 300px; text-align: center; padding: 20px;">
+                <i class="fa-solid fa-comments" style="font-size: 4rem; color: var(--secondary-color); margin-bottom: 15px;"></i>
+                <h4>Student Reviews</h4>
+                <p style="color: var(--gray); font-size: 0.95rem;">Read comments and feedback from fellow students before placing your order.</p>
+            </div>
+            <div style="flex: 1; min-width: 300px; text-align: center; padding: 20px;">
+                <i class="fa-solid fa-circle-check" style="font-size: 4rem; color: #2ecc71; margin-bottom: 15px;"></i>
+                <h4>Verified Sellers</h4>
+                <p style="color: var(--gray); font-size: 0.95rem;">Every meal card is linked to a verified campus cafeteria provider.</p>
             </div>
         </div>
     </section>

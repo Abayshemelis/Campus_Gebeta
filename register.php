@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $role     = $_POST['role'] ?? 'student';
 
     // Only allow valid roles via registration
-    $allowed_roles = ['student', 'seller', 'lecturer'];
+    $allowed_roles = ['student', 'seller'];
     if (!in_array($role, $allowed_roles)) {
         $role = 'student';
     }
@@ -71,9 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="form-group">
                     <label for="role">I am a...</label>
                     <select name="role" id="role" class="form-control" required>
-                        <option value="student"  <?= ($_POST['role'] ?? '') == 'student'  ? 'selected' : '' ?>>🎓 Student — Browse menu, order food, view notices</option>
-                        <option value="seller"   <?= ($_POST['role'] ?? '') == 'seller'   ? 'selected' : '' ?>>🛍️ Seller — Post items on Gebeta Market</option>
-                        <option value="lecturer" <?= ($_POST['role'] ?? '') == 'lecturer' ? 'selected' : '' ?>>📚 Lecturer — Post announcements & events</option>
+                        <option value="student"  <?= ($_POST['role'] ?? '') == 'student'  ? 'selected' : '' ?>>🎓 Student — Browse menu, order food, rate items</option>
+                        <option value="seller"   <?= ($_POST['role'] ?? '') == 'seller'   ? 'selected' : '' ?>>🛍️ Seller — Manage food listings & sales</option>
                     </select>
                 </div>
 
@@ -89,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <!-- Role info box -->
                 <div id="roleInfo" style="margin-bottom: 20px; padding: 12px 15px; border-radius: 8px; font-size: 0.88rem; background: var(--light-color); border-left: 4px solid var(--primary-color);">
-                    <strong>Student:</strong> Browse the menu, place orders, save favorites, manage wallet, and post Lost &amp; Found notices.
+                    <strong>Student:</strong> Browse the menu, place orders, save favorites, manage wallet, and rate foods.
                 </div>
 
                 <button type="submit" class="btn btn-primary" style="width: 100%;">Register</button>
@@ -103,11 +102,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 const roleSelect = document.getElementById('role');
 const roleInfo   = document.getElementById('roleInfo');
 const descriptions = {
-    student:  '<strong>Student:</strong> Browse the menu, place orders, save favorites, manage wallet, and post Lost &amp; Found notices.',
-    seller:   '<strong>Seller:</strong> List items on Gebeta Market for other students to find and contact you.',
-    lecturer: '<strong>Lecturer:</strong> Post official announcements and campus events to the Noticeboard.'
+    student:  '<strong>Student:</strong> Browse the menu, place orders, save favorites, manage wallet, and rate foods.',
+    seller:   '<strong>Seller:</strong> List food/drink items on the menu and manage your orders & sales.'
 };
-const colors = { student: '#457b9d', seller: '#f4a261', lecturer: '#2a9d8f' };
+const colors = { student: '#457b9d', seller: '#f4a261' };
 roleSelect.addEventListener('change', function () {
     roleInfo.innerHTML = descriptions[this.value] || '';
     roleInfo.style.borderLeftColor = colors[this.value] || 'var(--primary-color)';

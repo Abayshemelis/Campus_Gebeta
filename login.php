@@ -27,6 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
             if ($user->role === 'admin') {
                 redirect('admin/index.php');
+            } elseif ($user->role === 'seller') {
+                redirect('seller_dashboard.php');
             } else {
                 // If they have items in cart, maybe redirect to cart, else index
                 redirect('index.php');
