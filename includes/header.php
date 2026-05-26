@@ -91,11 +91,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
                             <i class="fa-solid fa-gauge" style="margin-right: 10px;"></i> Admin Dashboard
                         </a>
                     </li>
-                    <li>
-                        <a href="admin/users.php" class="side-nav-link">
-                            <i class="fa-solid fa-users-gear" style="margin-right: 10px;"></i> Manage Users
-                        </a>
-                    </li>
                 <?php elseif (isSeller()): ?>
                     <li>
                         <a href="seller_dashboard.php" class="side-nav-link <?= $current_page == 'seller_dashboard.php' ? 'active' : '' ?>">

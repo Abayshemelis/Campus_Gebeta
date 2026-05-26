@@ -1,8 +1,8 @@
 -- ============================================================
 -- Campus Gebeta — Full Database Schema (v2 with Role System)
 -- ============================================================
-CREATE DATABASE IF NOT EXISTS campus_gebeta;
-USE campus_gebeta;
+-- Create/select the database named in DB_NAME in your .env file before
+-- importing this schema. In phpMyAdmin, select that database first.
 
 -- ── Users ────────────────────────────────────────────────────
 -- Roles: student | seller | lecturer | admin
@@ -27,13 +27,28 @@ ON DUPLICATE KEY UPDATE email = email;
 -- ── Menu Items ───────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS menu_items (
     id           INT AUTO_INCREMENT PRIMARY KEY,
+    seller_id    INT NULL,
     name         VARCHAR(100) NOT NULL,
     description  TEXT,
     price        DECIMAL(10,2) NOT NULL,
     image_url    VARCHAR(255),
     category     VARCHAR(50),
     is_available BOOLEAN DEFAULT TRUE,
-    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (seller_id) REFERENCES users(id) ON DELETE SET NULL
+);
+
+-- ── Menu Item Ratings ───────────────────────────────────────
+CREATE TABLE IF NOT EXISTS menu_item_ratings (
+    id           INT AUTO_INCREMENT PRIMARY KEY,
+    menu_item_id INT NOT NULL,
+    user_id      INT NOT NULL,
+    rating       TINYINT UNSIGNED NOT NULL,
+    comment      TEXT,
+    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (menu_item_id) REFERENCES menu_items(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id)      REFERENCES users(id)      ON DELETE CASCADE,
+    UNIQUE KEY unique_menu_item_user_rating (menu_item_id, user_id)
 );
 
 -- ── Orders ───────────────────────────────────────────────────
@@ -117,6 +132,18 @@ CREATE TABLE IF NOT EXISTS meal_plans (
     created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+INSERT INTO meal_plans (name, description, price, meals_per_week, duration_days)
+SELECT 'Silver Plan', 'Enjoy 5 lunches per week at any cafeteria.', 500.00, 5, 30
+WHERE NOT EXISTS (SELECT id FROM meal_plans WHERE name = 'Silver Plan');
+
+INSERT INTO meal_plans (name, description, price, meals_per_week, duration_days)
+SELECT 'Gold Plan', 'Enjoy 10 meals (lunch or dinner) per week.', 950.00, 10, 30
+WHERE NOT EXISTS (SELECT id FROM meal_plans WHERE name = 'Gold Plan');
+
+INSERT INTO meal_plans (name, description, price, meals_per_week, duration_days)
+SELECT 'Platinum Plan', 'Unlimited dining up to 21 meals per week.', 1800.00, 21, 30
+WHERE NOT EXISTS (SELECT id FROM meal_plans WHERE name = 'Platinum Plan');
+
 -- ── User Meal Plans ──────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS user_meal_plans (
     id              INT AUTO_INCREMENT PRIMARY KEY,
@@ -135,3 +162,17 @@ CREATE TABLE IF NOT EXISTS user_meal_plans (
 -- ============================================================
 -- ALTER TABLE users MODIFY COLUMN role ENUM('student','seller','lecturer','admin') DEFAULT 'student';
 -- ALTER TABLE users ADD COLUMN status ENUM('active','suspended') DEFAULT 'active' AFTER role;
+-- ALTER TABLE users ADD COLUMN wallet_balance DECIMAL(10,2) DEFAULT 0.00 AFTER status;
+-- ALTER TABLE menu_items ADD COLUMN seller_id INT NULL AFTER id;
+-- ALTER TABLE menu_items ADD CONSTRAINT fk_menu_items_seller FOREIGN KEY (seller_id) REFERENCES users(id) ON DELETE SET NULL;
+-- CREATE TABLE IF NOT EXISTS menu_item_ratings (
+--     id INT AUTO_INCREMENT PRIMARY KEY,
+--     menu_item_id INT NOT NULL,
+--     user_id INT NOT NULL,
+--     rating TINYINT UNSIGNED NOT NULL,
+--     comment TEXT,
+--     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--     FOREIGN KEY (menu_item_id) REFERENCES menu_items(id) ON DELETE CASCADE,
+--     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+--     UNIQUE KEY unique_menu_item_user_rating (menu_item_id, user_id)
+-- );

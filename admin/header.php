@@ -5,6 +5,12 @@ require_once '../includes/functions.php';
 requireAdmin();
 
 $current_page = basename($_SERVER['PHP_SELF']);
+$admin_nav_items = [
+    ['file' => 'index.php', 'icon' => 'fa-gauge', 'label' => 'Dashboard'],
+    ['file' => 'menu.php', 'icon' => 'fa-burger', 'label' => 'Menu'],
+    ['file' => 'orders.php', 'icon' => 'fa-list-check', 'label' => 'Orders'],
+    ['file' => 'users.php', 'icon' => 'fa-users-gear', 'label' => 'Users'],
+];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -113,19 +119,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <!-- Sub Navigation -->
     <nav class="admin-subnav">
         <div class="container">
-            <a href="index.php" class="admin-nav-link <?= $current_page == 'index.php'   ? 'active' : '' ?>">
-                <i class="fa-solid fa-gauge"></i> Dashboard
-            </a>
-            <a href="menu.php" class="admin-nav-link <?= $current_page == 'menu.php'    ? 'active' : '' ?>">
-                <i class="fa-solid fa-burger"></i> Menu
-            </a>
-            <a href="orders.php" class="admin-nav-link <?= $current_page == 'orders.php'  ? 'active' : '' ?>">
-                <i class="fa-solid fa-list-check"></i> Orders
-            </a>
-            <a href="users.php" class="admin-nav-link <?= $current_page == 'users.php'   ? 'active' : '' ?>">
-                <i class="fa-solid fa-users-gear"></i> Users
-            </a>
-
+            <?php foreach ($admin_nav_items as $item): ?>
+                <?php if (!is_file(__DIR__ . '/' . $item['file'])) continue; ?>
+                <a href="<?= h($item['file']) ?>" class="admin-nav-link <?= $current_page == $item['file'] ? 'active' : '' ?>">
+                    <i class="fa-solid <?= h($item['icon']) ?>"></i> <?= h($item['label']) ?>
+                </a>
+            <?php endforeach; ?>
         </div>
     </nav>
 
