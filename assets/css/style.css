@@ -1408,6 +1408,13 @@ body.dark-mode .desktop-mockup:hover {
     color: var(--gray);
 }
 
+/* Grid Layout Utility */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
 /* Cafeteria Cards Styling */
 .cafeteria-card {
     background: var(--card-bg);
@@ -1419,6 +1426,19 @@ body.dark-mode .desktop-mockup:hover {
     display: flex;
     flex-direction: column;
     text-align: left;
+}
+.cafeteria-img-wrapper {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+    background: #f6f7fb;
+}
+.cafeteria-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 0;
 }
 
 .cafeteria-card:hover {
