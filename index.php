@@ -94,19 +94,20 @@
                             <?php else: ?>
                                 <div class="menu-img" style="background: #eee; display: flex; align-items: center; justify-content: center; color: #aaa;">No Image</div>
                             <?php endif; ?>
-                            
-                            <?php if (isLoggedIn()): ?>
-                                <?php $is_fav = in_array($item->id, $user_favorites); ?>
-                                <button class="toggle-favorite" data-id="<?= $item->id ?>" style="position: absolute; top: 10px; right: 10px; background: white; border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: var(--transition);">
-                                    <i class="<?= $is_fav ? 'fa-solid' : 'fa-regular' ?> fa-heart" style="color: var(--primary-color); font-size: 18px;"></i>
-                                </button>
-                            <?php endif; ?>
                         </div>
                         
                         <div class="menu-content">
-                            <div class="menu-title">
-                                <?= h($item->name) ?>
-                                <span class="menu-price"><?= number_format($item->price, 2) ?> ETB</span>
+                            <div class="menu-content-top">
+                                <div class="menu-title">
+                                    <?= h($item->name) ?>
+                                    <span class="menu-price"><?= number_format($item->price, 2) ?> ETB</span>
+                                </div>
+                                <?php if (isLoggedIn()): ?>
+                                    <?php $is_fav = in_array($item->id, $user_favorites); ?>
+                                    <button class="toggle-favorite favorite-btn" data-id="<?= $item->id ?>">
+                                        <i class="<?= $is_fav ? 'fa-solid' : 'fa-regular' ?> fa-heart"></i>
+                                    </button>
+                                <?php endif; ?>
                             </div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 0.82rem;">
                                 <!-- Star rating badge -->
