@@ -5,7 +5,7 @@
         <!-- Brand Section -->
         <div class="footer-brand" style="flex: 1; min-width: 250px;">
             <a href="index.php" style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px; text-decoration: none;">
-                <img src="assets/images/gebeta_logo.svg" alt="Campus Gebeta Logo" style="height: 45px; width: 45px; object-fit: contain;">
+                <img src="assets/images/gebeta_logo.png" alt="Campus Gebeta Logo" style="height: 60px; width: 60px;border-radius: 50%; object-fit: cover;">
                 <span style="color: var(--white); font-size: 1.5rem; font-weight: 700;">Campus <span style="color: var(--primary-color);">Gebeta</span></span>
             </a>
             <p style="color: #aaa; line-height: 1.6; margin-bottom: 20px;">
