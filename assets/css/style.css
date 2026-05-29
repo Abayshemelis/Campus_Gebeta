@@ -134,6 +134,18 @@ a {
     font-size: 24px;
     font-weight: 700;
     color: var(--dark-color);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.site-logo {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+    border: 2px solid rgba(255, 140, 0, 0.14);
 }
 
 .logo i {
@@ -1190,6 +1202,15 @@ body.dark-mode .desktop-mockup:hover {
     box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8);
 }
 
+.desktop-mockup img.desktop-hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 12px;
+    display: block;
+    background: var(--bg-color);
+}
+
 /* Header / Title Bar resembling browser */
 .desktop-header {
     height: 36px;
@@ -1387,6 +1408,13 @@ body.dark-mode .desktop-mockup:hover {
     color: var(--gray);
 }
 
+/* Grid Layout Utility */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
 /* Cafeteria Cards Styling */
 .cafeteria-card {
     background: var(--card-bg);
@@ -1398,6 +1426,19 @@ body.dark-mode .desktop-mockup:hover {
     display: flex;
     flex-direction: column;
     text-align: left;
+}
+.cafeteria-img-wrapper {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+    background: #f6f7fb;
+}
+.cafeteria-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 0;
 }
 
 .cafeteria-card:hover {

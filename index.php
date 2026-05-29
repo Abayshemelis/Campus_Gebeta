@@ -32,65 +32,9 @@
             <div class="hero-glow hero-glow-orange"></div>
             <div class="hero-glow hero-glow-green"></div>
             
-            <!-- Desktop Browser/App Mockup Frame -->
+            <!-- Desktop App Mockup Frame replaced with hero image -->
             <div class="desktop-mockup">
-                <!-- Browser Header / Title Bar -->
-                <div class="desktop-header">
-                    <div class="window-controls">
-                        <span class="control dot-red"></span>
-                        <span class="control dot-yellow"></span>
-                        <span class="control dot-green"></span>
-                    </div>
-                    <div class="address-bar">
-                        <i class="fa-solid fa-lock" style="font-size: 0.65rem; color: #2ecc71; margin-right: 5px;"></i> campus-gebeta.edu.et
-                    </div>
-                    <div class="header-actions">
-                        <i class="fa-solid fa-rotate-right" style="opacity: 0.7;"></i>
-                    </div>
-                </div>
-                
-                <!-- Browser Content / Desktop Application Layout -->
-                <div class="desktop-content">
-                    <!-- App Sidebar -->
-                    <div class="mockup-sidebar">
-                        <div class="logo-space"><i class="fa-solid fa-circle-nodes" style="color: var(--primary-color);"></i> Gebeta</div>
-                        <div class="sidebar-item active"><i class="fa-solid fa-house"></i> Home</div>
-                        <div class="sidebar-item"><i class="fa-solid fa-utensils"></i> Menu</div>
-                        <div class="sidebar-item"><i class="fa-solid fa-cart-shopping"></i> Cart</div>
-                        <div class="sidebar-item"><i class="fa-solid fa-wallet"></i> Wallet</div>
-                    </div>
-                    
-                    <!-- App Main Area -->
-                    <div class="mockup-main">
-                        <div class="mockup-top-bar">
-                            <span class="welcome-text">Welcome, Hawassa Student! 👋</span>
-                            <span class="wallet-badge"><i class="fa-solid fa-wallet"></i> 250.00 ETB</span>
-                        </div>
-                        
-                        <div class="mockup-dashboard-content">
-                            <!-- Banner Image of Local Dish -->
-                            <div class="mockup-banner">
-                                <img src="assets/images/gebeta_hero.png" alt="Featured Platter">
-                                <div class="banner-overlay">
-                                    <h3>Special Gebeta Platter</h3>
-                                    <p>15 mins away • Hot & Fresh</p>
-                                </div>
-                            </div>
-                            
-                            <!-- Stats / Details -->
-                            <div class="mockup-row">
-                                <div class="mockup-stat-card">
-                                    <span class="stat-num">10% OFF</span>
-                                    <span class="stat-lbl">Block 4 Lounge</span>
-                                </div>
-                                <div class="mockup-stat-card">
-                                    <span class="stat-num">4.9 ★</span>
-                                    <span class="stat-lbl">Highly Rated</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <img src="assets/images/gebeta_hero.png" alt="Campus Gebeta Hero" class="desktop-hero-img">
             </div>
         </div>
     </div>
@@ -220,54 +164,45 @@
             <div style="width: 60px; height: 4px; background: var(--primary-color); margin: 15px auto 0; border-radius: 2px;"></div>
         </div>
         
-        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
-            <div class="cafeteria-card reveal">
-    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2047" alt="Main Cafe" style="width:100%;height:200px;object-fit:cover;">
-    <div class="cafeteria-details">
-        <h3 style="margin-bottom:5px;">Main Student Lounge</h3>
-        <p style="color: var(--gray); font-size:0.9rem; margin-bottom:15px;">
-            <i class="fa-solid fa-location-dot" style="color: var(--primary-color);"></i> Block 4, Ground Floor
-        </p>
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-            <span style="color:#f1c40f;"><i class="fa-solid fa-star"></i> 4.8</span>
-            <span class="badge" style="background: rgba(46, 204, 113, 0.1); color: var(--secondary-color);">Open Now</span>
-        </div>
-    </div>
-</div>
-                <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2047" alt="Main Cafe" style="width: 100%; height: 200px; object-fit: cover;">
-                <div style="padding: 20px;">
-                    <h3 style="margin-bottom: 5px;">Main Student Lounge</h3>
-                    <p style="color: var(--gray); font-size: 0.9rem; margin-bottom: 15px;"><i class="fa-solid fa-location-dot" style="color: var(--primary-color);"></i> Block 4, Ground Floor</p>
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span style="color: #f1c40f;"><i class="fa-solid fa-star"></i> 4.8</span>
-                        <span class="badge" style="background: rgba(46, 204, 113, 0.1); color: var(--secondary-color);">Open Now</span>
-                    </div>
+        <div class="grid">
+            <article class="cafeteria-card reveal">
+                <div class="cafeteria-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2047" alt="Main Cafe">
+                    <span class="cafeteria-status-badge open">Open Now</span>
+                    <span class="cafeteria-rating-badge"><i class="fa-solid fa-star"></i> 4.8</span>
                 </div>
-            </div>
-            
-            <div class="card reveal" style="padding: 0; overflow: hidden; border-radius: 15px; transition-delay: 0.1s;">
-                <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=2069" alt="Coffee Spot" style="width: 100%; height: 200px; object-fit: cover;">
-                <div style="padding: 20px;">
-                    <h3 style="margin-bottom: 5px;">The Coffee Spot</h3>
-                    <p style="color: var(--gray); font-size: 0.9rem; margin-bottom: 15px;"><i class="fa-solid fa-location-dot" style="color: var(--primary-color);"></i> Library Wing</p>
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span style="color: #f1c40f;"><i class="fa-solid fa-star"></i> 4.9</span>
-                        <span class="badge" style="background: rgba(46, 204, 113, 0.1); color: var(--secondary-color);">Open Now</span>
-                    </div>
+                <div class="cafeteria-details">
+                    <h3>Main Student Lounge</h3>
+                    <p><i class="fa-solid fa-location-dot" style="color: var(--primary-color);"></i> Block 4, Ground Floor</p>
+                    <a href="menu.php" class="cafeteria-btn">View Menu <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
-            </div>
-            
-            <div class="card reveal" style="padding: 0; overflow: hidden; border-radius: 15px; transition-delay: 0.2s;">
-                <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1974" alt="Dorm Cafe" style="width: 100%; height: 200px; object-fit: cover;">
-                <div style="padding: 20px;">
-                    <h3 style="margin-bottom: 5px;">Dormitory Bites</h3>
-                    <p style="color: var(--gray); font-size: 0.9rem; margin-bottom: 15px;"><i class="fa-solid fa-location-dot" style="color: var(--primary-color);"></i> Near Block 12</p>
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span style="color: #f1c40f;"><i class="fa-solid fa-star"></i> 4.5</span>
-                        <span class="badge" style="background: rgba(231, 76, 60, 0.1); color: var(--danger);">Closed</span>
-                    </div>
+            </article>
+
+            <article class="cafeteria-card reveal" style="transition-delay: 0.1s;">
+                <div class="cafeteria-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=2069" alt="Coffee Spot">
+                    <span class="cafeteria-status-badge open">Open Now</span>
+                    <span class="cafeteria-rating-badge"><i class="fa-solid fa-star"></i> 4.9</span>
                 </div>
-            </div>
+                <div class="cafeteria-details">
+                    <h3>The Coffee Spot</h3>
+                    <p><i class="fa-solid fa-location-dot" style="color: var(--primary-color);"></i> Library Wing</p>
+                    <a href="menu.php" class="cafeteria-btn">View Menu <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </article>
+
+            <article class="cafeteria-card reveal" style="transition-delay: 0.2s;">
+                <div class="cafeteria-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1974" alt="Dorm Cafe">
+                    <span class="cafeteria-status-badge closed">Closed</span>
+                    <span class="cafeteria-rating-badge"><i class="fa-solid fa-star"></i> 4.5</span>
+                </div>
+                <div class="cafeteria-details">
+                    <h3>Dormitory Bites</h3>
+                    <p><i class="fa-solid fa-location-dot" style="color: var(--primary-color);"></i> Near Block 12</p>
+                    <a href="menu.php" class="cafeteria-btn">View Menu <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </article>
         </div>
     </section>
 
