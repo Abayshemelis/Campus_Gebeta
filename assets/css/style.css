@@ -134,6 +134,18 @@ a {
     font-size: 24px;
     font-weight: 700;
     color: var(--dark-color);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.site-logo {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+    border: 2px solid rgba(255, 140, 0, 0.14);
 }
 
 .logo i {

@@ -103,7 +103,8 @@ $admin_nav_items = [
     <header class="admin-topbar">
         <div class="container nav-container">
             <a href="index.php" class="logo">
-                <i class="fa-solid fa-gauge"></i> Admin <span>Panel</span>
+                <img src="../assets/images/gebeta_logo.png" alt="Campus Gebeta Logo" class="site-logo">
+                <span>Admin <span>Panel</span></span>
             </a>
             <div class="user-info">
                 <i class="fa-solid fa-circle-user"></i>
