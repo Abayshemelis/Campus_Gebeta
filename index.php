@@ -32,65 +32,9 @@
             <div class="hero-glow hero-glow-orange"></div>
             <div class="hero-glow hero-glow-green"></div>
             
-            <!-- Desktop Browser/App Mockup Frame -->
+            <!-- Desktop App Mockup Frame replaced with hero image -->
             <div class="desktop-mockup">
-                <!-- Browser Header / Title Bar -->
-                <div class="desktop-header">
-                    <div class="window-controls">
-                        <span class="control dot-red"></span>
-                        <span class="control dot-yellow"></span>
-                        <span class="control dot-green"></span>
-                    </div>
-                    <div class="address-bar">
-                        <i class="fa-solid fa-lock" style="font-size: 0.65rem; color: #2ecc71; margin-right: 5px;"></i> campus-gebeta.edu.et
-                    </div>
-                    <div class="header-actions">
-                        <i class="fa-solid fa-rotate-right" style="opacity: 0.7;"></i>
-                    </div>
-                </div>
-                
-                <!-- Browser Content / Desktop Application Layout -->
-                <div class="desktop-content">
-                    <!-- App Sidebar -->
-                    <div class="mockup-sidebar">
-                        <div class="logo-space"><i class="fa-solid fa-circle-nodes" style="color: var(--primary-color);"></i> Gebeta</div>
-                        <div class="sidebar-item active"><i class="fa-solid fa-house"></i> Home</div>
-                        <div class="sidebar-item"><i class="fa-solid fa-utensils"></i> Menu</div>
-                        <div class="sidebar-item"><i class="fa-solid fa-cart-shopping"></i> Cart</div>
-                        <div class="sidebar-item"><i class="fa-solid fa-wallet"></i> Wallet</div>
-                    </div>
-                    
-                    <!-- App Main Area -->
-                    <div class="mockup-main">
-                        <div class="mockup-top-bar">
-                            <span class="welcome-text">Welcome, Hawassa Student! 👋</span>
-                            <span class="wallet-badge"><i class="fa-solid fa-wallet"></i> 250.00 ETB</span>
-                        </div>
-                        
-                        <div class="mockup-dashboard-content">
-                            <!-- Banner Image of Local Dish -->
-                            <div class="mockup-banner">
-                                <img src="assets/images/gebeta_hero.png" alt="Featured Platter">
-                                <div class="banner-overlay">
-                                    <h3>Special Gebeta Platter</h3>
-                                    <p>15 mins away • Hot & Fresh</p>
-                                </div>
-                            </div>
-                            
-                            <!-- Stats / Details -->
-                            <div class="mockup-row">
-                                <div class="mockup-stat-card">
-                                    <span class="stat-num">10% OFF</span>
-                                    <span class="stat-lbl">Block 4 Lounge</span>
-                                </div>
-                                <div class="mockup-stat-card">
-                                    <span class="stat-num">4.9 ★</span>
-                                    <span class="stat-lbl">Highly Rated</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <img src="assets/images/gebeta_hero.png" alt="Campus Gebeta Hero" class="desktop-hero-img">
             </div>
         </div>
     </div>
